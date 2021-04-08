@@ -178,8 +178,16 @@ func (d *DockerfileContainerizer) GetContainer(plan plantypes.Plan, service plan
 
 		// is "port" present ?
 		if val, ok := segmentRecord["port"]; ok {
-			portToExpose := int(val.(float64)) // Type assert to float64 because json numbers are floats.
-			container.AddExposedPort(portToExpose)
+			portsToExpose := val.([]interface{}) // Type assert to float64 because json numbers are floats.
+			log.Debugf("Ports identified : %s", portsToExpose)
+			for _, p := range portsToExpose {
+				container.AddExposedPort(int(p.(float64)))
+			}
+		}
+
+		// is "envs" present ?
+		if val, ok := segmentRecord["envs"]; ok {
+			container.EnvVars = (map[string]string)(val.(map[string]string))
 		}
 
 		// is "files_to_copy" present ?

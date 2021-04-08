@@ -106,6 +106,7 @@ type Container struct {
 	New                bool              // true if this is a new image that needs to be built
 	NewFiles           map[string]string //[filename][filecontents] This contains the build scripts, new Dockerfiles, etc.
 	ExposedPorts       []int
+	EnvVars            map[string]string
 	UserID             int
 	AccessedDirs       []string
 }
